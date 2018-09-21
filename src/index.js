@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import AuthorQuiz from "./AuthorQuiz";
 import registerServiceWorker from "./registerServiceWorker";
+import { shuffle } from "underscore";
 
 const authors = [
   {
@@ -17,11 +18,14 @@ const authors = [
   }
 ];
 
+function getTurnData(authors) {
+  const allBooks = authors.reduce(function(accum, content, idx) {
+    return accum.concat(content.books);
+  }, []);
+}
+
 const state = {
-  turnData: {
-    author: authors[0],
-    books: authors[0].books
-  }
+  turnData: getTurnData(authors)
 };
 
 ReactDOM.render(<AuthorQuiz {...state} />, document.getElementById("root"));
