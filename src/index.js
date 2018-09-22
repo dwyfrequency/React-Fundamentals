@@ -50,11 +50,17 @@ function getTurnData(authors) {
   const allBooks = authors.reduce(function(accum, content, idx) {
     return accum.concat(content.books);
   }, []);
+
+  // shuffle and sample come from underscore library
+  // shuffle array and take the first four elements
   const fourRandomBooks = shuffle(allBooks).slice(0, 4);
+  // randomly pull an entry from the array
   const answer = sample(fourRandomBooks);
 
   return {
     books: fourRandomBooks,
+    // returns the author - find has an t/f conditional that returns the data based on conditional. Some says whether the title exists at all in the array.
+    // if true, we will pass that to find func, which will return the author obj
     author: authors.find(author => author.books.some(title => title === answer))
   };
 }
