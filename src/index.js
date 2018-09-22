@@ -47,7 +47,7 @@ const authors = [
 ];
 
 function getTurnData(authors) {
-  const allBooks = authors.reduce(function(accum, content, idx) {
+  const allBooks = authors.reduce(function(accum, content) {
     return accum.concat(content.books);
   }, []);
 
@@ -56,7 +56,6 @@ function getTurnData(authors) {
   const fourRandomBooks = shuffle(allBooks).slice(0, 4);
   // randomly pull an entry from the array
   const answer = sample(fourRandomBooks);
-
   return {
     books: fourRandomBooks,
     // returns the author - find has an t/f conditional that returns the data based on conditional. Some says whether the title exists at all in the array.
@@ -66,7 +65,8 @@ function getTurnData(authors) {
 }
 
 const state = {
-  turnData: getTurnData(authors)
+  turnData: getTurnData(authors),
+  highlight: "wrong"
 };
 
 ReactDOM.render(<AuthorQuiz {...state} />, document.getElementById("root"));
