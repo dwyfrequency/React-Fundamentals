@@ -77,6 +77,7 @@ function onAnswerSelected(answer) {
   render();
 }
 
+// wrapped ReactDOM.render with our own render function so we could rerender when the answer was selected
 function render() {
   ReactDOM.render(
     <AuthorQuiz {...state} onAnswerSelected={onAnswerSelected} />,

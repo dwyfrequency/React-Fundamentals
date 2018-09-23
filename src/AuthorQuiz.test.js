@@ -6,6 +6,8 @@ import Enzyme, { shallow } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import AuthorQuiz from "./AuthorQuiz";
 
+Enzyme.configure({ adapter: new Adapter() });
+
 // run test using npm test
 describe("Author Quiz", () => {
   it("component renders without crashing", () => {
