@@ -68,7 +68,7 @@ describe("Author Quiz", () => {
     });
   });
 
-  describe("When no answer has been selected", () => {
+  describe("When the correct answer has been selected", () => {
     let wrapper;
     beforeAll(() => {
       // render AuthorQuiz component before test
@@ -88,17 +88,26 @@ describe("Author Quiz", () => {
 
   describe("When the first answer is selected", () => {
     let wrapper;
+    // jest.fn - creates a mock function
     const handleAnswerSelected = jest.fn();
     beforeAll(() => {
       // render AuthorQuiz component before test
       wrapper = mount(
         <AuthorQuiz {...state} onAnswerSelected={handleAnswerSelected} />
       );
+      wrapper
+        .find(".answer")
+        .first()
+        .simulate("click");
     });
-    it("should have a red background color", () => {
-      expect(wrapper.find("div.row.turn").props().style.backgroundColor).toBe(
-        "green"
-      );
+
+    it("onAnswerSelected should be called", () => {
+      expect(handleAnswerSelected).toHaveBeenCalled();
+    });
+
+    it("should receive The Shining", () => {
+      // called with the shining b/c it is the first book in the array
+      expect(handleAnswerSelected).toHaveBeenCalledWith("The Shining");
     });
   });
 });
