@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
@@ -49,6 +50,17 @@ function Turn({ author, books, highlight, onAnswerSelected }) {
     </div>
   );
 }
+
+Turn.propTypes = {
+  author: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    imageUrl: PropTypes.string.isRequired,
+    imageSource: PropTypes.string.isRequired,
+    books: PropTypes.arrayOf(PropTypes.string).isRequired
+  }),
+  books: PropTypes.arrayOf(PropTypes.string).isRequired,
+  onAnswerSelected: PropTypes.func.isRequired
+};
 
 function Continue(props) {
   return <div />;
