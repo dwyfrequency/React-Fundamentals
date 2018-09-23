@@ -15,15 +15,15 @@ function Hero() {
   );
 }
 
-function Book({ title }) {
+function Book({ title, onClick }) {
   return (
-    <div className="answer">
+    <div className="answer" onClick={() => onClick(title)}>
       <h4>{title}</h4>
     </div>
   );
 }
 
-function Turn({ author, books, highlight }) {
+function Turn({ author, books, highlight, onAnswerSelected }) {
   function highlightToBgColor(highlight) {
     const mapping = {
       none: "",
@@ -43,7 +43,7 @@ function Turn({ author, books, highlight }) {
       </div>
       <div className="col-6">
         {books.map(title => (
-          <Book title={title} key={title} />
+          <Book title={title} key={title} onClick={onAnswerSelected} />
         ))}
       </div>
     </div>
@@ -59,18 +59,23 @@ function Footer(props) {
     <div id="footer" className="row">
       <div className="col-12">
         <p className="text-muted credit">
-          All images are from <a href="http://commons.wikimedia.org/wiki" />
+          All images are from a{" "}
+          <a href="http://commons.wikimedia.org/wiki">link</a>
         </p>
       </div>
     </div>
   );
 }
 
-function AuthorQuiz({ turnData, highlight }) {
+function AuthorQuiz({ turnData, highlight, onAnswerSelected }) {
   return (
     <div className="container-fluid">
       <Hero />
-      <Turn {...turnData} highlight={highlight} />
+      <Turn
+        {...turnData}
+        highlight={highlight}
+        onAnswerSelected={onAnswerSelected}
+      />
       <Continue />
       <Footer />
     </div>
