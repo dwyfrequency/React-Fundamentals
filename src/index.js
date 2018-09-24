@@ -4,6 +4,7 @@ import ReactDOM from "react-dom";
 import { BrowserRouter, Route } from "react-router-dom";
 import "./index.css";
 import AuthorQuiz from "./AuthorQuiz";
+import AddAuthorForm from "./AddAuthorForm";
 import registerServiceWorker from "./registerServiceWorker";
 import { shuffle, sample } from "underscore";
 
@@ -81,15 +82,6 @@ function onAnswerSelected(answer) {
 
 function App() {
   return <AuthorQuiz {...state} onAnswerSelected={onAnswerSelected} />;
-}
-
-function AddAuthorForm({ match }) {
-  return (
-    <div>
-      <h1>Add Author</h1>
-      <p>{JSON.stringify(match)}</p>
-    </div>
-  );
 }
 
 // wrapped ReactDOM.render with our own render function so we could rerender when the answer was selected
