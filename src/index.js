@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+// npm i react-router-dom
 import { BrowserRouter, Route } from "react-router-dom";
 import "./index.css";
 import AuthorQuiz from "./AuthorQuiz";
@@ -82,11 +83,25 @@ function App() {
   return <AuthorQuiz {...state} onAnswerSelected={onAnswerSelected} />;
 }
 
+function AddAuthorForm({ match }) {
+  return (
+    <div>
+      <h1>Add Author</h1>
+      <p>{JSON.stringify(match)}</p>
+    </div>
+  );
+}
+
 // wrapped ReactDOM.render with our own render function so we could rerender when the answer was selected
 function render() {
   ReactDOM.render(
     <BrowserRouter>
-      <App />
+      {/* B/c Router may only have one child element, we wrap them in a single parent
+      React.Fragment: allows us to group components into a single parent. It also does not add any additional elements to the dom. If we had tried this without, we would need to have added a div to satify the react requirement */}
+      <React.Fragment>
+        <Route exact path="/" component={App} />
+        <Route exact path="/add" component={AddAuthorForm} />
+      </React.Fragment>
     </BrowserRouter>,
     document.getElementById("root")
   );
