@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { BrowserRouter, Route } from "react-router-dom";
 import "./index.css";
 import AuthorQuiz from "./AuthorQuiz";
 import registerServiceWorker from "./registerServiceWorker";
@@ -77,10 +78,16 @@ function onAnswerSelected(answer) {
   render();
 }
 
+function App() {
+  return <AuthorQuiz {...state} onAnswerSelected={onAnswerSelected} />;
+}
+
 // wrapped ReactDOM.render with our own render function so we could rerender when the answer was selected
 function render() {
   ReactDOM.render(
-    <AuthorQuiz {...state} onAnswerSelected={onAnswerSelected} />,
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>,
     document.getElementById("root")
   );
 }
