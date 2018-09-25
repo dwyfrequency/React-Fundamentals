@@ -84,6 +84,11 @@ function App() {
   return <AuthorQuiz {...state} onAnswerSelected={onAnswerSelected} />;
 }
 
+function AuthorWrapper() {
+  // wrapper func allows us to specify props
+  return <AddAuthorForm onAddAuthor={console.log} />;
+}
+
 // wrapped ReactDOM.render with our own render function so we could rerender when the answer was selected
 function render() {
   ReactDOM.render(
@@ -92,7 +97,7 @@ function render() {
       React.Fragment: allows us to group components into a single parent. It also does not add any additional elements to the dom. If we had tried this without, we would need to have added a div to satify the react requirement */}
       <React.Fragment>
         <Route exact path="/" component={App} />
-        <Route exact path="/add" component={AddAuthorForm} />
+        <Route exact path="/add" component={AuthorWrapper} />
       </React.Fragment>
     </BrowserRouter>,
     document.getElementById("root")
