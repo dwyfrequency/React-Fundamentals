@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 // npm i react-router-dom
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, withRouter } from "react-router-dom";
 import "./index.css";
 import AuthorQuiz from "./AuthorQuiz";
 import AddAuthorForm from "./AddAuthorForm";
@@ -84,10 +84,19 @@ function App() {
   return <AuthorQuiz {...state} onAnswerSelected={onAnswerSelected} />;
 }
 
-function AuthorWrapper() {
+// withRouter: func that allows us to give components access to history
+const AuthorWrapper = withRouter(({ history }) => {
   // wrapper func allows us to specify props
-  return <AddAuthorForm onAddAuthor={console.log} />;
-}
+  return (
+    <AddAuthorForm
+      onAddAuthor={author => {
+        authors.push(author);
+        // here, we push a new path which will be the root of the app here
+        history.push("/");
+      }}
+    />
+  );
+});
 
 // wrapped ReactDOM.render with our own render function so we could rerender when the answer was selected
 function render() {

@@ -7,7 +7,8 @@ class AuthorForm extends Component {
     this.state = {
       name: "",
       imageUrl: "",
-      books: []
+      books: [],
+      bookTemp: ""
     };
 
     // guarentees that no matter how onFieldChange is called, it will use the same value of this as assigned in the constructor
