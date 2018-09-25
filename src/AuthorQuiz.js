@@ -41,7 +41,7 @@ function Turn({ author, books, highlight, onAnswerSelected }) {
       style={{ backgroundColor: highlightToBgColor(highlight) }}
     >
       <div className="col-4 offset-1">
-        <img src={author.imageUrl} className="authorimage" alt="Author" />
+        <img src={author.imageUrl} className="authorimage" alt={author.name} />
       </div>
       <div className="col-6">
         {books.map(title => (
@@ -63,8 +63,21 @@ Turn.propTypes = {
   onAnswerSelected: PropTypes.func.isRequired
 };
 
-function Continue(props) {
-  return <div />;
+function Continue({ show, onContinue }) {
+  return (
+    <div className="row continue">
+      {show ? (
+        <div className="col-11">
+          <button
+            className="btn btn-primary btn-lg float-right"
+            onClick={onContinue}
+          >
+            Continue
+          </button>
+        </div>
+      ) : null}
+    </div>
+  );
 }
 
 function Footer(props) {
@@ -80,7 +93,7 @@ function Footer(props) {
   );
 }
 
-function AuthorQuiz({ turnData, highlight, onAnswerSelected }) {
+function AuthorQuiz({ turnData, highlight, onAnswerSelected, onContinue }) {
   return (
     <div className="container-fluid">
       <Hero />
@@ -93,7 +106,7 @@ function AuthorQuiz({ turnData, highlight, onAnswerSelected }) {
         {/* navigates to our add url path */}
         <Link to="/add">Add an author</Link>
       </p>
-      <Continue />
+      <Continue show={highlight === "correct"} onContinue={onContinue} />
       <Footer />
     </div>
   );

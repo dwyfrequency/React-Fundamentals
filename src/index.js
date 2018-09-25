@@ -67,10 +67,14 @@ function getTurnData(authors) {
   };
 }
 
-const state = {
-  turnData: getTurnData(authors),
-  highlight: ""
-};
+function resetState() {
+  return {
+    turnData: getTurnData(authors),
+    highlight: ""
+  };
+}
+
+let state = resetState();
 
 // answer is the title from the selected book div
 function onAnswerSelected(answer) {
@@ -81,7 +85,16 @@ function onAnswerSelected(answer) {
 }
 
 function App() {
-  return <AuthorQuiz {...state} onAnswerSelected={onAnswerSelected} />;
+  return (
+    <AuthorQuiz
+      {...state}
+      onAnswerSelected={onAnswerSelected}
+      onContinue={() => {
+        state = resetState();
+        render();
+      }}
+    />
+  );
 }
 
 // withRouter: func that allows us to give components access to history
