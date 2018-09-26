@@ -2,6 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 // npm i react-router-dom
 import { BrowserRouter, Route, withRouter } from "react-router-dom";
+import * as Redux from "redux";
+import * as ReactRedux from "react-redux";
 import "./index.css";
 import AuthorQuiz from "./AuthorQuiz";
 import AddAuthorForm from "./AddAuthorForm";
@@ -74,6 +76,13 @@ function resetState() {
   };
 }
 
+function reducer(state, action) {
+  return state;
+}
+
+// application state container
+let store = Redux.createStore(reducer);
+// need to keep this state for now while we refactor or app will break
 let state = resetState();
 
 // answer is the title from the selected book div
@@ -86,14 +95,16 @@ function onAnswerSelected(answer) {
 
 function App() {
   return (
-    <AuthorQuiz
-      {...state}
-      onAnswerSelected={onAnswerSelected}
-      onContinue={() => {
-        state = resetState();
-        render();
-      }}
-    />
+    <ReactRedux.Provider store={store}>
+      <AuthorQuiz
+        {...state}
+        onAnswerSelected={onAnswerSelected}
+        onContinue={() => {
+          state = resetState();
+          render();
+        }}
+      />
+    </ReactRedux.Provider>
   );
 }
 
