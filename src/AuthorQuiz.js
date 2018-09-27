@@ -114,7 +114,7 @@ function mapDispatchToProps(dispatch) {
 
 const AuthorQuiz = connect(
   mapStateToProps,
-  mapDispatchToPrps
+  mapDispatchToProps
 )(function({ turnData, highlight, onAnswerSelected, onContinue }) {
   return (
     <div className="container-fluid">

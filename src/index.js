@@ -88,22 +88,19 @@ function reducer(
       return Object.assign({}, state, {
         highlight: isCorrect ? "correct" : "wrong"
       });
+    case "CONTINUE":
+      return Object.assign({}, state, {
+        highlight: "",
+        turnData: getTurnData(state.authors)
+      });
+    default:
+      return state;
   }
   return state;
 }
 
 // application state container
 let store = Redux.createStore(reducer);
-// need to keep this state for now while we refactor or app will break
-let state = resetState();
-
-// answer is the title from the selected book div
-function onAnswerSelected(answer) {
-  const isCorrect = state.turnData.author.books.some(book => book === answer);
-  state.highlight = isCorrect ? "correct" : "wrong";
-  // once the state is updated, rerender the dom
-  render();
-}
 
 function App() {
   return (
@@ -128,18 +125,15 @@ const AuthorWrapper = withRouter(({ history }) => {
 });
 
 // wrapped ReactDOM.render with our own render function so we could rerender when the answer was selected
-function render() {
-  ReactDOM.render(
-    <BrowserRouter>
-      {/* B/c Router may only have one child element, we wrap them in a single parent
+ReactDOM.render(
+  <BrowserRouter>
+    {/* B/c Router may only have one child element, we wrap them in a single parent
       React.Fragment: allows us to group components into a single parent. It also does not add any additional elements to the dom. If we had tried this without, we would need to have added a div to satify the react requirement */}
-      <React.Fragment>
-        <Route exact path="/" component={App} />
-        <Route exact path="/add" component={AuthorWrapper} />
-      </React.Fragment>
-    </BrowserRouter>,
-    document.getElementById("root")
-  );
-}
-render();
+    <React.Fragment>
+      <Route exact path="/" component={App} />
+      <Route exact path="/add" component={AuthorWrapper} />
+    </React.Fragment>
+  </BrowserRouter>,
+  document.getElementById("root")
+);
 registerServiceWorker();
