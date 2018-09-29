@@ -1,8 +1,9 @@
-import React, { Component } from "react";
+import React from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import "./AddAuthorForm.css";
 
-class AuthorForm extends Component {
+class AuthorForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -11,36 +12,29 @@ class AuthorForm extends Component {
       books: [],
       bookTemp: ""
     };
-
-    // guarentees that no matter how onFieldChange is called, it will use the same value of this as assigned in the constructor
     this.onFieldChange = this.onFieldChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleAddBook = this.handleAddBook.bind(this);
   }
-
   handleSubmit(event) {
     event.preventDefault();
     this.props.onAddAuthor(this.state);
   }
-
   onFieldChange(event) {
     this.setState({
       [event.target.name]: event.target.value
     });
   }
-
   handleAddBook(event) {
     this.setState({
       books: this.state.books.concat([this.state.bookTemp]),
       bookTemp: ""
     });
   }
-
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
         <div className="AddAuthorForm__input">
-          {/* b/c js uses for as a reserved word, we need to make the jsx label htmlFor */}
           <label htmlFor="name">Name</label>
           <input
             type="text"
@@ -50,15 +44,19 @@ class AuthorForm extends Component {
           />
         </div>
         <div className="AddAuthorForm__input">
-          <label htmlFor="imageUrl">Image Url</label>
-          <input type="text" name="imageUrl" onChange={this.onFieldChange} />
+          <label htmlFor="imageUrl">Image URL</label>
+          <input
+            type="text"
+            name="imageUrl"
+            value={this.state.imageUrl}
+            onChange={this.onFieldChange}
+          />
         </div>
         <div className="AddAuthorForm__input">
+          <label htmlFor="bookTemp">Books</label>
           {this.state.books.map(book => (
             <p key={book}>{book}</p>
           ))}
-
-          <label htmlFor="bookTemp">Books</label>
           <input
             type="text"
             name="bookTemp"
@@ -78,9 +76,22 @@ function AddAuthorForm({ match, onAddAuthor }) {
     <div className="AddAuthorForm">
       <h1>Add Author</h1>
       <AuthorForm onAddAuthor={onAddAuthor} />
-      {/* <p>{JSON.stringify(match)}</p> */}
     </div>
   );
 }
 
-export default AddAuthorForm;
+function mapDispatchToProps(dispatch, props) {
+  return {
+    onAddAuthor: author => {
+      dispatch({ type: "ADD_AUTHOR", author });
+      props.history.push("/");
+    }
+  };
+}
+
+export default withRouter(
+  connect(
+    () => {},
+    mapDispatchToProps
+  )(AddAuthorForm)
+);

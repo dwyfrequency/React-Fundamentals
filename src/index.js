@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-// npm i react-router-dom
-import { BrowserRouter, Route, withRouter } from "react-router-dom";
+import { BrowserRouter, Route } from "react-router-dom";
 import * as Redux from "redux";
 import * as ReactRedux from "react-redux";
 import "./index.css";
@@ -52,27 +51,15 @@ const authors = [
 ];
 
 function getTurnData(authors) {
-  const allBooks = authors.reduce(function(accum, content) {
-    return accum.concat(content.books);
+  const allBooks = authors.reduce(function(p, c, i) {
+    return p.concat(c.books);
   }, []);
-
-  // shuffle and sample come from underscore library
-  // shuffle array and take the first four elements
   const fourRandomBooks = shuffle(allBooks).slice(0, 4);
-  // randomly pull an entry from the array
   const answer = sample(fourRandomBooks);
+
   return {
     books: fourRandomBooks,
-    // returns the author - find has an t/f conditional that returns the data based on conditional. Some says whether the title exists at all in the array.
-    // if true, we will pass that to find func, which will return the author obj
     author: authors.find(author => author.books.some(title => title === answer))
-  };
-}
-
-function resetState() {
-  return {
-    turnData: getTurnData(authors),
-    highlight: ""
   };
 }
 
@@ -83,7 +70,7 @@ function reducer(
   switch (action.type) {
     case "ANSWER_SELECTED":
       const isCorrect = state.turnData.author.books.some(
-        book => book === action
+        book => book === action.answer
       );
       return Object.assign({}, state, {
         highlight: isCorrect ? "correct" : "wrong"
@@ -93,47 +80,30 @@ function reducer(
         highlight: "",
         turnData: getTurnData(state.authors)
       });
+    case "ADD_AUTHOR":
+      return Object.assign({}, state, {
+        authors: state.authors.concat([action.author])
+      });
     default:
       return state;
   }
-  return state;
 }
 
-// application state container
-let store = Redux.createStore(reducer);
+let store = Redux.createStore(
+  reducer,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 
-function App() {
-  return (
-    <ReactRedux.Provider store={store}>
-      <AuthorQuiz />
-    </ReactRedux.Provider>
-  );
-}
-
-// withRouter: func that allows us to give components access to history
-const AuthorWrapper = withRouter(({ history }) => {
-  // wrapper func allows us to specify props
-  return (
-    <AddAuthorForm
-      onAddAuthor={author => {
-        authors.push(author);
-        // here, we push a new path which will be the root of the app here
-        history.push("/");
-      }}
-    />
-  );
-});
-
-// wrapped ReactDOM.render with our own render function so we could rerender when the answer was selected
 ReactDOM.render(
   <BrowserRouter>
-    {/* B/c Router may only have one child element, we wrap them in a single parent
-      React.Fragment: allows us to group components into a single parent. It also does not add any additional elements to the dom. If we had tried this without, we would need to have added a div to satify the react requirement */}
-    <React.Fragment>
-      <Route exact path="/" component={App} />
-      <Route exact path="/add" component={AuthorWrapper} />
-    </React.Fragment>
+    <ReactRedux.Provider store={store}>
+      <React.Fragment>
+        <Route exact path="/" component={AuthorQuiz} />
+        <Route path="/add" component={AddAuthorForm} />
+      </React.Fragment>
+    </ReactRedux.Provider>
   </BrowserRouter>,
   document.getElementById("root")
 );
+
 registerServiceWorker();
