@@ -89,6 +89,7 @@ function reducer(
   }
 }
 
+// need second param to work with redux dev tool extension
 let store = Redux.createStore(
   reducer,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
